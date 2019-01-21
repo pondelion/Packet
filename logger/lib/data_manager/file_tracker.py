@@ -10,9 +10,9 @@ class FileTracker:
         self.
         pass
 
-    def get_local_filepath(self):
+    @property
+    def local_filepath(self):
         self._refresh_file()
         return self._local_file_path
 
     def _refresh_file(self):
-        
