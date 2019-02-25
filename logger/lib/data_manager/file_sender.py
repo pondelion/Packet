@@ -1,25 +1,10 @@
 from abc import ABCMeta, abstractmethod
+from typing import Type
 
 
 class FileSender:
 
-    def __init__(self):
-        pass
-
-    def save2s3(
-        self,
-        callback=FileSender._DefaultSaveFinishedCallback(): FileSender.SaveFinishedCallback
-    ):
-        self._save_s3_async(callback)
-
-    def _save_s3_async(
-        self,
-        callback=FileSender._DefaultSaveFinishedCallback(): FileSender.SaveFinishedCallback
-    ):
-        result = '?'
-        callback.on_save_finished(result=result)
-
-    class SaveFinishedCallback(metaclass=ABCMeta):
+    class ISaveFinishedCallback(metaclass=ABCMeta):
 
         @abstractmethod
         def on_save_finished(
@@ -28,10 +13,26 @@ class FileSender:
         ):
             raise NotImplementedError()
 
-    class _DefaultSaveFinishedCallback(FileSender.SaveFinishedCallback):
+    class _DefaultSaveFinishedCallback(ISaveFinishedCallback):
 
         def on_save_finished(
             self,
             result: str
         ):
             pass
+
+    def __init__(self):
+        pass
+
+    def save2s3(
+        self,
+        callback: Type[ISaveFinishedCallback]=_DefaultSaveFinishedCallback()
+    ):
+        self._save2s3_async(callback)
+
+    def _save2s3_async(
+        self,
+        callback: Type[ISaveFinishedCallback]=_DefaultSaveFinishedCallback()
+    ):
+        result = '?'
+        callback.on_save_finished(result=result)

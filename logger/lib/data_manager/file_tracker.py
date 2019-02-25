@@ -7,8 +7,7 @@ class FileTracker:
     def __init__(
         self
     ):
-        self.
-        pass
+        self._local_file_path = ''
 
     @property
     def local_filepath(self):
@@ -16,3 +15,4 @@ class FileTracker:
         return self._local_file_path
 
     def _refresh_file(self):
+        pass

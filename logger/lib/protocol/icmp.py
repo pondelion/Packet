@@ -1,5 +1,11 @@
 import struct
-from ctypes import *
+from ctypes import (
+    Structure,
+    c_uint8,
+    c_uint16,
+    c_uint32
+)
+import socket
 
 
 class ICMP(Structure):
