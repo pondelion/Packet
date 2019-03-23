@@ -27,11 +27,15 @@ class PacketCapture:
         self,
         host: str
     ):
-        sock = socket.socket(
-            socket.AF_INET,
-            socket.SOCK_RAW,
-            self._socket_protcol
-        )
+        try:
+            sock = socket.socket(
+                socket.AF_INET,
+                socket.SOCK_RAW,
+                self._socket_protcol
+            )
+        except OSError as e:
+            print('You need run as administrator.')
+            raise e
 
         sock.bind((host, 0))
         sock.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
@@ -55,18 +59,23 @@ class PacketCapture:
         offset = ip_header.ihl * 4
 
         if ip_header.protocol == 'ICMP':
-            header = data[offset:offset+sizeof(ICMP)]
+            header = ICMP(data[offset:offset+sizeof(ICMP)])
             content = data[offset+sizeof(ICMP):]
         elif ip_header.protocol == 'TCP':
-            header = data[offset:offset+sizeof(TCP)]
+            header = TCP(data[offset:offset+sizeof(TCP)])
             content = data[offset+sizeof(TCP):]
         elif ip_header.protocol == 'UDP':
-            header = data[offset:offset+sizeof(UDP)]
+            header = UDP(data[offset:offset+sizeof(UDP)])
             content = data[offset+sizeof(UDP):]
+
+        header_dict = {
+            'ip': ip_header,
+            'tr': header
+        }
 
         packet = Packet(
             protocol=ip_header.protocol,
-            header=header,
+            headers=header_dict,
             content=content
         )
 

@@ -9,6 +9,7 @@ import socket
 
 
 class IP(Structure):
+
     _fields_ = [
         ('ihl',     c_uint8, 4),
         ('version', c_uint8, 4),
@@ -26,17 +27,28 @@ class IP(Structure):
     def __new__(self, socket_buffer=None):
         return self.from_buffer_copy(socket_buffer)
 
-    def __init__(self, socket_Buffer=None):
+    def __init__(self, socket_buffer=None):
         self.protocol_map = {
             1: 'ICMP',
             6: 'TCP',
             17: 'UDP',
         }
 
-        self.src_address = socket.inet_ntoa(struct.pack('<L', self.src))
-        self.dst_address = socket.inet_ntoa(struct.pack('<L', self.dst))
-
         try:
             self.protocol = self.protocol_map[self.protocol_num]
         except:
             self.protocol = str(self.protocol_num)
+
+        self._parse2pydata()
+
+    def __str__(self):
+        return str(self._packet_dict)
+
+    def _parse2pydata(self):
+        self._packet_dict = {
+            'protocol': self.protocol,
+            'src': socket.inet_ntoa(struct.pack('<L', self.src)),
+            'dst': socket.inet_ntoa(struct.pack('<L', self.dst)),
+            'ttl': self.ttl,
+            'len': self.len,
+        }

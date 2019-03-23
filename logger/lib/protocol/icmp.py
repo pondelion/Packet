@@ -11,11 +11,11 @@ import socket
 class ICMP(Structure):
 
     _fields_ = [
-        ("type",         c_uint8),
-        ("code",         c_uint8),
-        ("checksum",     c_uint16),
-        ("unused",       c_uint16),
-        ("next_hop_mtu", c_uint16)
+        ('type',         c_uint8),
+        ('code',         c_uint8),
+        ('checksum',     c_uint16),
+        ('unused',       c_uint16),
+        ('next_hop_mtu', c_uint16)
     ]
 
     def __new__(self, socket_buffer):
