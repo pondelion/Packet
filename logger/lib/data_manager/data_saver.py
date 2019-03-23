@@ -1,5 +1,6 @@
 from typing import Type
 from .packet import Packet
+from ..util.logger import get_logger
 
 
 class DataSaver:
@@ -9,10 +10,11 @@ class DataSaver:
         log_dir: str
     ):
         self._log_dir = log_dir
+        self._logger = get_logger()
 
     def save(
         self,
         packet: Type[Packet]
     ):
-        print(packet)
-        print('='*50)
+        self._logger.debug(packet)
+        self._logger.debug('='*50)

@@ -6,4 +6,5 @@ class StatusReporter:
         pass
 
     def report(self):
-        pass
+        while True:
+            pass

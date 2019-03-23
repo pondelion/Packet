@@ -1,13 +1,11 @@
 import os
 import socket
 from ctypes import sizeof
-from .protocol.ip import IP
-from .protocol.tcp import TCP
-from .protocol.udp import UDP
-from .protocol.icmp import ICMP
+from .protocol import IP, TCP, UDP, ICMP
 from .data_manager.packet import Packet
 from .data_manager.file_tracker import FileTracker
 from .data_manager.data_saver import DataSaver
+from .util.logger import get_logger
 
 
 class PacketCapture:
@@ -21,6 +19,7 @@ class PacketCapture:
         self._data_saver = DataSaver(
             log_dir=log_dir
         )
+        self._logger = get_logger()
         # self._file_tracker
 
     def capture(
@@ -34,7 +33,7 @@ class PacketCapture:
                 self._socket_protcol
             )
         except OSError as e:
-            print('You need run as administrator.')
+            self._logger.debug('You need to run as administrator.')
             raise e
 
         sock.bind((host, 0))
