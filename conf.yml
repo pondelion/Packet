@@ -1,8 +1,8 @@
 
 ANALYZER:
-  S3_LOG_BACKET: ''
+  S3_LOG_BUCKET: 'packet-log'
 
 LOGGER:
   LOCAL_LOG_FILE_DIR: './data'
-  S3_LOG_BACKET: '' 
+  S3_LOG_BUCKET: 'packet-log' 
   TARGET_IP: 192.168.111.255
